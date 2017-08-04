@@ -1,0 +1,33 @@
+{% extends "lost/search.html" %}
+
+{% block content %}
+    {% if lost_data.RESULT %} {# error #}
+        <p>요청결과 코드 : {{ lost_data.RESULT.CODE }}</p>
+        <p>요청결과 메시지 : {{ lost_data.RESULT.MESSAGE }}</p>
+    {% else %}
+        <p>총 데이터 건수 : {{ lost_data.ListLostArticleService.list_total_count }}</p>
+        <p>검색 건수 : </p>
+        <p>요청결과 코드 : {{ lost_data.ListLostArticleService.RESULT.CODE }}</p>
+        <p>요청결과 메시지 : {{ lost_data.ListLostArticleService.RESULT.MESSAGE }}</p>
+        {% for lost in lost_data.ListLostArticleService.row %}
+            <ul class="data">
+                <li>습득물품명 : {{ lost.GET_NAME }}</li>
+                <ul>
+                    <li>분실물 ID : {{ lost.ID }}</li>
+                    <li>원문링크주소(지하철) : {% if lost.URL %} <a href="{{ lost.URL }}">Link</a> {% endif %}</li>
+                    <li>습득물분류 : {{ lost.TITLE }}</li>
+                    <li>습득일자 : {{ lost.GET_DATE }}</li>
+                    <li>수령가능장소 : {{ lost.TAKE_PLACE }}</li>
+                    <li>수령가능장소연락처 : {{ lost.CONTACT }}</li>
+                    <li>습득물분류 : {{ lost.CATE }}</li>
+                    <li>습득위치_회사명 : {{ lost.GET_POSITION }}</li>
+                    <li>습득위치(지하철) : {{ lost.GET_PLACE }}</li>
+                    <li>습득물품_상세 : {{ lost.GET_THING }}</li>
+                    <li>분실물상태 : {{ lost.STATUS }}</li>
+                    <li>습득물품코드 : {{ lost.CODE }}</li>
+                    <li>이미지 URL : {{ lost.IMAGE_URL }}</li>
+                </ul>
+            </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

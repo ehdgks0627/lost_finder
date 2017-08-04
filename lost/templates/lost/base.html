@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>분실물 조회</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            function search(){
+                if($("#keyword").val() != "" && $("#lost_cate").val() == "전체")
+                {
+                    alert("키워드 검색시 카테고리는 전체로 설정할 수 없습니다");
+                    $("#lost_cate").focus();
+                    return false;
+                }
+                document.location.href = "/main/?start=" + $("#page_start").val() + "&end=" + $("#page_end").val() + "&lost_type=" + $("#lost_type").val() + "&lost_cate=" + $("#lost_cate").val() + "&keyword=" + $("#keyword").val();
+            }
+        </script>
+        <style>
+            body {
+                margin: 0;
+            }
+            #fixed-menu {
+                width: 100%;
+                background-color: #608ffb;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                height: 30px;
+                text-align: center;
+                padding-top: 10px;
+            }
+            #main-content {
+                width: 100%;
+                margin-top: 50px;
+                background-color: #e0e0e0;
+            }
+            .data {
+                background-color: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="fixed-menu">
+            {% block search %}
+            {% endblock %}
+        </div>
+        <div id="main-content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
