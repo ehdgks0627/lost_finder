@@ -148,11 +148,6 @@ celerybeat-schedule
 # dotenv
 .env
 
-# virtualenv
-.venv
-venv/
-ENV/
-
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -166,5 +161,4 @@ ENV/
 # End of https://www.gitignore.io/api/python,pycharm
 
 lost/my_api_key.py
-venv/*
 .idea/*

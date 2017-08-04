@@ -1,3 +1,5 @@
+import requests
+import json
 from django.shortcuts import render
 from .my_api_key import api_key_OA123, api_key_OA124 # set your own key here
 
@@ -28,9 +30,6 @@ cate = {
 }
 
 def lost_list(request):
-    import requests
-    import json
-
     s = requests.Session()
     lost_type = request.GET.get("lost_type", "b1")
     lost_cate = request.GET.get("lost_cate", "전체")
