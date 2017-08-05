@@ -12,7 +12,7 @@
             <ul>
                 <li>습득물품명 : {{ lost.GET_NAME }}</li>
                 <ul>
-                    <li>분실물 ID : {{ lost.ID||slugify }}</li>
+                    <li>분실물 ID : {{ lost.ID|slugify }}</li>
                     <li>원문링크주소(지하철) : {% if lost.URL %} <a href="{{ lost.URL }}">Link</a> {% endif %}</li>
                     <li>습득물분류 : {{ lost.TITLE }}</li>
                     <li>습득일자 : {{ lost.GET_DATE }}</li>
