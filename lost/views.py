@@ -1,7 +1,7 @@
 import requests
 import json
 from django.shortcuts import render
-from .my_api_key import api_key_OA123, api_key_OA124 # set your own key here
+from .my_api_key import api_key_OA123, api_key_OA124  # set your own key here
 
 # Create your views here.
 
@@ -28,6 +28,7 @@ cate = {
     "핸드폰": "핸드폰",
     "기타": "기타",
 }
+
 
 def lost_list(request):
     s = requests.Session()
@@ -69,6 +70,7 @@ def lost_list(request):
             "keyword": keyword
         }
         return render(request, 'lost/lost_list_OA123.html', context)
+
 
 def lost_search(request):
     context = {
