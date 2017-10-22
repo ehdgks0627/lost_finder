@@ -1,4 +1,4 @@
-#!/Users/sprout/Desktop/lost_finder/venv/bin/python
+#!/Users/sprout/Desktop/projects/lost_finder/venv/bin/python
 from django.core import management
 
 if __name__ == "__main__":

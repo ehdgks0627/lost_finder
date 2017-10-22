@@ -36,7 +36,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/sprout/Desktop/lost_finder/venv"
+set -gx VIRTUAL_ENV "/Users/sprout/Desktop/projects/lost_finder/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
