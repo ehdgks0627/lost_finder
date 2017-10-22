@@ -163,3 +163,5 @@ celerybeat-schedule
 lost/my_api_key.py
 .idea/*
 .DS_Store
+
+venv
