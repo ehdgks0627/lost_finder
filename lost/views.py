@@ -1,13 +1,12 @@
 import requests
 import json
-from konlpy.tag import Twitter
+import subprocess
+from django.http import HttpResponse
 from django import template
 from django.shortcuts import render
 from .my_api_key import api_key_OA123, api_key_OA124  # set your own key here
 from .models import *
 
-twitter = Twitter()
-twitter.nouns("나는 바보 이다")
 wb_code = {
     "버스": "b1",
     "마을버스": "b2",
@@ -36,15 +35,22 @@ cate = {
 ERR_MSG_NO_DATA = "해당하는 데이터가 없습니다."
 
 def nouns(x):
-    return " ".join(twitter.nouns(x))
+    with open("data", "w") as f:
+        f.write(json.dumps(x))
+    output = subprocess.check_output(["python3", "/home/sprout/Desktop/lost_finder/extract.py", "data"])
+    with open("result", "w") as f:
+        f.write(output.decode())
+    return json.loads(output.decode())
 
 def lost_update(request):
     s = requests.Session()
-    idx = 1
     for lost_type in wb_code.values():
+        idx = 1
+        print("Parsing %s type"%(lost_type))
         while True:
             url = "http://openAPI.seoul.go.kr:8088/%s/json/ListLostArticleService/%d/%d/%s/" % (
                 api_key_OA124, idx, idx + 999, lost_type)
+            print("request %s"%(url))
             r = s.get(url)
             lost_data = json.loads(r.text)
             if "ListLostArticleService" in lost_data.keys() and "list_total_count" in lost_data["ListLostArticleService"].keys(): #정상 응답
@@ -52,8 +58,34 @@ def lost_update(request):
                 if len(rows) == 0: #항목이 더이상 없을경우
                     break
                 else: #항목이 있으면
+                    data = []
                     for row in rows:
-                        print(nouns(row))
+                        data.append(row["GET_NAME"])
+                    words = nouns(data)
+                    for i in range(len(rows)):
+                        if not rows[i].get("GET_NAME"):
+                            continue
+                        try:
+                            Item.objects.create(it_name         = rows[i].get("GET_NAME"),
+                                                it_id           = int(rows[i].get("ID")),
+                                                it_url          = rows[i].get("URL"),
+                                                it_title        = rows[i].get("TITLE"),
+                                                it_get_date     = rows[i].get("GET_DATE"),
+                                                it_take_place   = rows[i].get("TAKE_PLACE"),
+                                                it_contact      = rows[i].get("CONTACT"),
+                                                it_cate         = rows[i].get("CATE"),
+                                                it_get_position = rows[i].get("GET_POSITION"),
+                                                it_get_place    = rows[i].get("GET_PLACE"),
+                                                it_get_thing    = rows[i].get("GET_THING"),
+                                                it_status       = rows[i].get("STATUS"),
+                                                it_code         = rows[i].get("CODE"),
+                                                it_image_url    = rows[i].get("IMAGE_URL"),
+                                                it_drive_num    = rows[i].get("DRIVE_NUM"),
+                                                it_get_nm      = rows[i].get("GET_NM"),
+                                                words           = str(words[i]))
+                        except:
+                            continue
+
             elif "RESULT" in lost_data.keys() and lost_data["RESULT"]["MESSAGE"] == ERR_MSG_NO_DATA: #조회결과가 없을경우
                 break
             idx += 1000
