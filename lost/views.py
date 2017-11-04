@@ -1,15 +1,14 @@
-import requests
 import json
 import subprocess
-from django.http import HttpResponse
-from django import template
+from operator import itemgetter
+
+import requests
+from django.forms.models import model_to_dict
 from django.shortcuts import render
 from gensim.models.word2vec import Word2Vec
-from operator import itemgetter
-from django.forms.models import model_to_dict
-from .my_api_key import api_key_OA123, api_key_OA124  # set your own key here
-from .models import *
 
+from .models import *
+from .my_api_key import api_key_OA124  # set your own key here
 
 model = Word2Vec.load("word2vec.model")
 
@@ -48,22 +47,24 @@ def nouns(x):
         f.write(output.decode())
     return json.loads(output.decode())
 
+
 def lost_update(request):
     s = requests.Session()
     for lost_type in wb_code.values():
         idx = 1
-        print("Parsing %s type"%(lost_type))
+        print("Parsing %s type" % (lost_type))
         while True:
             url = "http://openAPI.seoul.go.kr:8088/%s/json/ListLostArticleService/%d/%d/%s/" % (
                 api_key_OA124, idx, idx + 999, lost_type)
-            print("request %s"%(url))
+            print("request %s" % (url))
             r = s.get(url)
             lost_data = json.loads(r.text)
-            if "ListLostArticleService" in lost_data.keys() and "list_total_count" in lost_data["ListLostArticleService"].keys(): #정상 응답
+            if "ListLostArticleService" in lost_data.keys() and "list_total_count" in lost_data[
+                "ListLostArticleService"].keys():  # 정상 응답
                 rows = lost_data["ListLostArticleService"]["row"]
-                if len(rows) == 0: #항목이 더이상 없을경우
+                if len(rows) == 0:  # 항목이 더이상 없을경우
                     break
-                else: #항목이 있으면
+                else:  # 항목이 있으면
                     data = []
                     for row in rows:
                         data.append(row["GET_NAME"])
@@ -72,31 +73,32 @@ def lost_update(request):
                         if not rows[i].get("GET_NAME"):
                             continue
                         try:
-                            Item.objects.create(it_name         = rows[i].get("GET_NAME"),
-                                                it_id           = int(rows[i].get("ID")),
-                                                it_url          = rows[i].get("URL"),
-                                                it_title        = rows[i].get("TITLE"),
-                                                it_get_date     = rows[i].get("GET_DATE"),
-                                                it_take_place   = rows[i].get("TAKE_PLACE"),
-                                                it_contact      = rows[i].get("CONTACT"),
-                                                it_cate         = rows[i].get("CATE"),
-                                                it_get_position = rows[i].get("GET_POSITION"),
-                                                it_get_place    = rows[i].get("GET_PLACE"),
-                                                it_get_thing    = rows[i].get("GET_THING"),
-                                                it_status       = rows[i].get("STATUS"),
-                                                it_code         = rows[i].get("CODE"),
-                                                it_image_url    = rows[i].get("IMAGE_URL"),
-                                                it_drive_num    = rows[i].get("DRIVE_NUM"),
-                                                it_get_nm      = rows[i].get("GET_NM"),
-                                                words           = str(words[i]))
+                            Item.objects.create(it_name=rows[i].get("GET_NAME"),
+                                                it_id=int(rows[i].get("ID")),
+                                                it_url=rows[i].get("URL"),
+                                                it_title=rows[i].get("TITLE"),
+                                                it_get_date=rows[i].get("GET_DATE"),
+                                                it_take_place=rows[i].get("TAKE_PLACE"),
+                                                it_contact=rows[i].get("CONTACT"),
+                                                it_cate=rows[i].get("CATE"),
+                                                it_get_position=rows[i].get("GET_POSITION"),
+                                                it_get_place=rows[i].get("GET_PLACE"),
+                                                it_get_thing=rows[i].get("GET_THING"),
+                                                it_status=rows[i].get("STATUS"),
+                                                it_code=rows[i].get("CODE"),
+                                                it_image_url=rows[i].get("IMAGE_URL"),
+                                                it_drive_num=rows[i].get("DRIVE_NUM"),
+                                                it_get_nm=rows[i].get("GET_NM"),
+                                                words=str(words[i]))
                         except:
                             continue
 
-            elif "RESULT" in lost_data.keys() and lost_data["RESULT"]["MESSAGE"] == ERR_MSG_NO_DATA: #조회결과가 없을경우
+            elif "RESULT" in lost_data.keys() and lost_data["RESULT"]["MESSAGE"] == ERR_MSG_NO_DATA:  # 조회결과가 없을경우
                 break
             idx += 1000
     context = []
     return render(request, 'lost/lost_list_OA124.html', context)
+
 
 def lost_list(request):
     def compare_string(words1, words2):
@@ -114,10 +116,6 @@ def lost_list(request):
         else:
             return 0.0
 
-    #lost_type = request.GET.get("lost_type", "b1")
-    #lost_cate = request.GET.get("lost_cate", "전체")
-    #page_start = int(request.GET.get("start", 1))
-    #page_end = int(request.GET.get("end", 10))
     keyword = request.GET.get("keyword", "")
     keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
 
@@ -129,41 +127,8 @@ def lost_list(request):
     context = {
         "lost_data": map(lambda x: model_to_dict(x[0]), vector)
     }
-    #return HttpResponse(str(keyword_words))
     return render(request, 'lost/lost_list.html', context)
 
-'''
-    if lost_cate == "전체" and not keyword:
-##
-        url = "http://openAPI.seoul.go.kr:8088/%s/json/ListLostArticleService/%d/%d/%s/" % (
-            api_key_OA124, page_start, page_end, lost_type)
-        lost_data = json.loads(requests.get(url).text)
-##
-        #lost_data = 
-        context = {
-            "lost_data": lost_data,
-            "page_start": page_start,
-            "page_end": page_end,
-            "wb_code": wb_code,
-            "lost_type": lost_type,
-            "cate": cate,
-            "lost_cate": lost_cate
-        }
-        return render(request, 'lost/lost_list_OA124.html', context)
-    else:
-        #lost_data = 
-        context = {
-            "lost_data": lost_data,
-            "page_start": page_start,
-            "page_end": page_end,
-            "wb_code": wb_code,
-            "lost_type": lost_type,
-            "cate": cate,
-            "lost_cate": lost_cate,
-            "keyword": keyword
-        }
-        return render(request, 'lost/lost_list_OA123.html', context)
-'''
 
 def lost_search(request):
     context = {
