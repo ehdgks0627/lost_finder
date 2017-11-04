@@ -1,18 +1,19 @@
 {% extends "lost/base.html" %}
 
 {% block search %}
-    <input type="text" id="page_start" value="{{ page_start }}">
-    <input type="text" id="page_end" value="{{ page_end }}">
-    <select id="lost_type">
-        {% for key,value in wb_code.items %}
-        <option value="{{ value }}" {% ifequal lost_type value %}selected{% endifequal %}>{{ key }}</option>
-        {% endfor %}
-    </select>
-    <select id="lost_cate">
-        {% for key,value in cate.items %}
-        <option value="{{ value }}" {% ifequal lost_cate value %}selected{% endifequal %}>{{ key }}</option>
-        {% endfor %}
-    </select>
+    {# <input type="text" id="page_start" value="{{ page_start }}"> #}
+    {# <input type="text" id="page_end" value="{{ page_end }}"> #}
+
+    {# <sel ect id="lost_type"> #}
+        {# {% for key,value in wb_code.items %} #}
+        {# <option value="{{ value }}" {% ifequal lost_type value %}selected{% endifequal %}>{{ key }}</option> #}
+        {# {% endfor %} #}
+    {# </select> #}
+    {# <select id="lost_cate"> #}
+        {# {% for key,value in cate.items %} #}
+        {# <option value="{{ value }}" {% ifequal lost_cate value %}selected{% endifequal %}>{{ key }}</option> #}
+        {# {% endfor %} #}
+    {# </select> #}
     <input type="text" id="keyword" value="{{ keyword }}">
     <button onclick="search()">검색</button>
 {% endblock %}

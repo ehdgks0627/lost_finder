@@ -1,0 +1,24 @@
+{% extends "lost/search.html" %}
+
+{% block content %}
+    {% for lost in lost_data %}
+        <ul class="data">
+            <li>습득물품명 : {{ lost.it_get_name }}</li>
+            <ul>
+                <li>분실물 ID : {{ lost.it_id|slugify }}</li>
+                <li>원문링크주소(지하철) : {% if lost.it_url %} <a href="{{ lost.it_url }}">Link</a> {% endif %}</li>
+                <li>습득물분류 : {{ lost.it_title }}</li>
+                <li>습득일자 : {{ lost.it_get_date }}</li>
+                <li>수령가능장소 : {{ lost.it_take_place }}</li>
+                <li>수령가능장소연락처 : {{ lost.it_contact }}</li>
+                <li>습득물분류 : {{ lost.it_cate }}</li>
+                <li>습득위치_회사명 : {{ lost.it_get_position }}</li>
+                <li>습득위치(지하철) : {{ lost.it_get_place }}</li>
+                <li>습득물품_상세 : {{ lost.it_get_thing }}</li>
+                <li>분실물상태 : {{ lost.it_status }}</li>
+                <li>습득물품코드 : {{ lost.it_code }}</li>
+                <li>이미지 URL : {% if lost.it_image_url %} <a href="{{ lost.it_image_url }}" target="_blank">조회</a> {% endif %}</li>
+            </ul>
+        </ul>
+    {% endfor %}
+{% endblock %}

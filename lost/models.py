@@ -20,8 +20,8 @@ class Item(models.Model):
     words = models.CharField(max_length = 4096, null=True)
 
     def __str__(self):
-        return "[ %d ] %s" % (self.it_id, self.it_name)
+        return "[ %d ] %s (%s)" % (self.it_id, self.it_name, self.words)
     def __repr__(self):
-        return "[ %d ] %s" % (self.it_id, self.it_name)
+        return "[ %d ] %s (%s)" % (self.it_id, self.it_name, self.words)
     def __unicode__(self):
-        return "[ %d ] %s" % (self.it_id, self.it_name)
+        return "[ %d ] %s (%s)" % (self.it_id, self.it_name, self.words)

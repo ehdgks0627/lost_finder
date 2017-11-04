@@ -4,8 +4,14 @@ import subprocess
 from django.http import HttpResponse
 from django import template
 from django.shortcuts import render
+from gensim.models.word2vec import Word2Vec
+from operator import itemgetter
+from django.forms.models import model_to_dict
 from .my_api_key import api_key_OA123, api_key_OA124  # set your own key here
 from .models import *
+
+
+model = Word2Vec.load("word2vec.model")
 
 wb_code = {
     "버스": "b1",
@@ -93,12 +99,40 @@ def lost_update(request):
     return render(request, 'lost/lost_list_OA124.html', context)
 
 def lost_list(request):
-    lost_type = request.GET.get("lost_type", "b1")
-    lost_cate = request.GET.get("lost_cate", "전체")
-    page_start = int(request.GET.get("start", 1))
-    page_end = int(request.GET.get("end", 10))
-    keyword = request.GET.get("keyword", "")
+    def compare_string(words1, words2):
+        result = 0.0
+        cnt = 0
+        for word1 in words1:
+            for word2 in words2:
+                try:
+                    result += model.similarity(word1, word2)
+                    cnt += 1
+                except:
+                    pass
+        if cnt:
+            return result / cnt
+        else:
+            return 0.0
 
+    #lost_type = request.GET.get("lost_type", "b1")
+    #lost_cate = request.GET.get("lost_cate", "전체")
+    #page_start = int(request.GET.get("start", 1))
+    #page_end = int(request.GET.get("end", 10))
+    keyword = request.GET.get("keyword", "")
+    keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
+
+    vector = []
+    for item in Item.objects.all()[:100]:
+        vector.append((item, compare_string(item.words, keyword_words)))
+    vector.sort(key=itemgetter(1))
+
+    context = {
+        "lost_data": map(lambda x: model_to_dict(x[0]), vector)
+    }
+    #return HttpResponse(str(keyword_words))
+    return render(request, 'lost/lost_list.html', context)
+
+'''
     if lost_cate == "전체" and not keyword:
 ##
         url = "http://openAPI.seoul.go.kr:8088/%s/json/ListLostArticleService/%d/%d/%s/" % (
@@ -129,7 +163,7 @@ def lost_list(request):
             "keyword": keyword
         }
         return render(request, 'lost/lost_list_OA123.html', context)
-
+'''
 
 def lost_search(request):
     context = {
