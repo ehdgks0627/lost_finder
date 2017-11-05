@@ -120,7 +120,7 @@ def lost_list(request):
     keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
 
     vector = []
-    for item in Item.objects.all()
+    for item in Item.objects.all():
         vector.append((item, compare_string(item.words, keyword_words)))
     vector.sort(key=itemgetter(1))
 
