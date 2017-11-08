@@ -120,7 +120,7 @@ def lost_list(request):
     keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
 
     vector = []
-    for item in Item.objects.all():
+    for item in Item.objects.all()[:10000]:
         vector.append((item, compare_string(item.words, keyword_words)))
     vector.sort(key=itemgetter(1))
 
@@ -137,4 +137,4 @@ def lost_search(request):
         "page_start": 1,
         "page_end": 10,
     }
-    return render(request, 'lost/search.html', context)
+    return render(request, 'lost/index.html', context)

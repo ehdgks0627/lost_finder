@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="https://layer7.kr/assets/style.css" type="text/css">
+  <title>Lost Finder</title>
+</head>
+
+<body class="text-center">
+  <nav class="navbar navbar-inverse navbar-expand-md navbar-dark bg-primary">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+          <li class="nav-item">
+            <a class="nav-link" href="#about">소개</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:document.form.keyword.focus();">검색</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/ehdgks0627/lost_finder">Github</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="cover d-flex align-items-center pt-1 bg-primary">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-md-left align-self-center my-5">
+          <h1 class="text-white display-4" align="center">Lost Finder</h1>
+          <h5 class="text-white" align="center">Lost and Found System</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section py-5 text-md-center" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="text-primary">About Lost Finder</h2>
+          <br>
+          <p class="lead">Lost Finder는 공공 데이터를 이용한 분실물 검색 시스템 입니다.
+            <br> 잃어버린 물건을 검색하여 쉽게 찾을 수 있습니다. </p>
+          <br> </div>
+      </div>
+      <form name="form" id="form" action="/main/" method="GET">
+        <div class="row">
+          <div class="col-md-3"></div>
+            <div class="col-md-4">
+              <input class="form-control form-control-lg" placeholder="분실물" type="text" name="keyword"> </div>
+            <div class="col-md-2">
+              <input type="submit" value="검색" class="btn btn-block btn-outline-primary btn-lg"></div>
+          <div class="col-md-3"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <br>
+  <div class="section py-5 text-md-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p>© SiwooMun All Rights Reserved</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <script src="https://layer7.kr/assets/bootstrap.min.js"></script>
+</body>
+
+</html>
