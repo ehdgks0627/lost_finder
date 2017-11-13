@@ -38,6 +38,9 @@ cate = {
 }
 
 ERR_MSG_NO_DATA = "해당하는 데이터가 없습니다."
+result_count = 10
+search_count = 100
+assert(result_count < search_count)
 
 def nouns(x):
     with open("data", "w") as f:
@@ -107,7 +110,7 @@ def lost_list(request):
         for word1 in words1:
             for word2 in words2:
                 try:
-                    result += model.similarity(word1, word2)
+                    result += (model.similarity(word1, word2) * 100) ** 2
                     cnt += 1
                 except:
                     pass
@@ -120,14 +123,14 @@ def lost_list(request):
     keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
 
     vector = []
-    for item in Item.objects.all()[:10000]:
-        vector.append((item, compare_string(item.words, keyword_words)))
+    for item in Item.objects.all()[:search_count]:
+        vector.append((item, compare_string(eval(item.words), keyword_words)))
     vector.sort(key=itemgetter(1))
 
     context = {
-        "lost_data": map(lambda x: model_to_dict(x[0]), vector)
+            "lost_data": list(map(lambda x: model_to_dict(x[0]), vector))[:result_count]
     }
-    return render(request, 'lost/lost_list.html', context)
+    return render(request, 'lost/result.html', context)
 
 
 def lost_search(request):
