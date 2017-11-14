@@ -38,8 +38,8 @@ cate = {
 }
 
 ERR_MSG_NO_DATA = "해당하는 데이터가 없습니다."
-result_count = 100
-search_count = 100000
+result_count = 10
+search_count = 1000
 
 assert(result_count < search_count)
 
@@ -125,7 +125,9 @@ def lost_list(request):
 
     vector = []
     for item in Item.objects.all()[:search_count]:
-        vector.append((item, compare_string(eval(item.words), keyword_words)))
+        score = compare_string(eval(item.words), keyword_words)
+        if score:
+            vector.append((item, score))
     vector.sort(key=itemgetter(1))
 
     context = {
