@@ -39,7 +39,8 @@ cate = {
 
 ERR_MSG_NO_DATA = "해당하는 데이터가 없습니다."
 result_count = 10
-search_count = 100
+search_count = 10000
+
 assert(result_count < search_count)
 
 def nouns(x):
@@ -128,7 +129,7 @@ def lost_list(request):
     vector.sort(key=itemgetter(1))
 
     context = {
-            "lost_data": list(map(lambda x: model_to_dict(x[0]), vector))[:result_count]
+            "lost_data": map(lambda x: model_to_dict(x[0]), vector[::-1][:result_count])
     }
     return render(request, 'lost/result.html', context)
 
