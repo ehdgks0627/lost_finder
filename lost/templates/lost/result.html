@@ -6,11 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://layer7.kr/assets/style.css" type="text/css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <script src="https://layer7.kr/assets/bootstrap.min.js"></script>
   <title>Lost Finder</title>
   <script>
     var losts = [];
     {% for lost in lost_data %}
-      losts.push({it_take_place      : "{{ lost.it_take_place }}",
+      losts.push({
+                  it_name            : "{{ lost.it_name }}",
+                  it_id              : "{{ lost.it_id }}",
+                  it_url             : "{{ lost.it_url }}",
+                  it_title           : "{{ lost.it_title }}",
+                  it_get_date        : "{{ lost.it_get_date }}",
+                  it_take_place      : "{{ lost.it_take_place }}",
                   it_contact         : "{{ lost.it_contact }}",
                   it_cate            : "{{ lost.it_cate }}",
                   it_get_position    : "{{ lost.it_get_position }}",
@@ -18,8 +27,23 @@
                   it_get_thing       : "{{ lost.it_get_thing }}",
                   it_status          : "{{ lost.it_status }}",
                   it_code            : "{{ lost.it_code }}",
-                  it_image_url       : "{{ lost.it_image_url }}"});
-  {% endfor %}
+                  it_image_url       : "{{ lost.it_image_url }}"
+                 });
+    {% endfor %}
+    function detailView(it_id) {
+      $("#detailView").html("");
+      var lost = losts.filter(function( obj ) {
+        return obj.it_id == it_id;
+      });
+      console.log("Clicked", lost);
+      //TODO add detail Here
+      //$("#detailView").append(x);
+    }
+    $(function () {
+      losts.forEach(function (x) {
+        $("#listView").append("<p><button onclick='detailView(" + x.it_id + ")' style='width: 200px;'>" + x.it_name + "</button></p>");
+      });
+    });
   </script>
 </head>
 
@@ -73,8 +97,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'"> <span aria-hidden="true">×</span> </button>
                 </div>
                 <div class="modal-body text-left w-100">
-                  <ul class="data p-3">
-                    #TODO
+                  <ul class="data p-3" id="listView">
                   </ul>
                 </div>
                 <div class="modal-footer">
@@ -93,8 +116,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'"> <span aria-hidden="true">×</span> </button>
                 </div>
                 <div class="modal-body text-left w-100">
-                  <ul class="data p-3">
-                    #TODO
+                  <ul class="data p-3" id="detailView">
                   </ul>
                 </div>
               </div>
@@ -109,8 +131,5 @@
       </div>
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-  <script src="https://layer7.kr/assets/bootstrap.min.js"></script>
 </body>
 </html>
