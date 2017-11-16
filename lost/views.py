@@ -8,7 +8,7 @@ from django.shortcuts import render
 from gensim.models.word2vec import Word2Vec
 
 from .models import *
-from .my_api_key import api_key_OA124  # set your own key here
+#from .my_api_key import api_key_OA124  # set your own key here
 
 model = Word2Vec.load("word2vec.model")
 
@@ -122,7 +122,6 @@ def lost_list(request):
 
     keyword = request.GET.get("keyword", "")
     keyword_words = json.loads(subprocess.check_output(["python", "./extract_output.py", keyword]).decode())
-
     vector = []
     for item in Item.objects.all()[:search_count]:
         score = compare_string(eval(item.words), keyword_words)

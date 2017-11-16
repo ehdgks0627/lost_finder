@@ -33,14 +33,37 @@
       $("#detailView").html("");
       var lost = losts.filter(function( obj ) {
         return obj.it_id == it_id;
-      });
-      console.log("Clicked", lost);
-      //TODO add detail Here
-      //$("#detailView").append(x);
+      })[0];
+      $("#detailView").append('<div class="card-block p-3 m-1">\n' +
+          '                      <h1><span style="font-size: 35px;">\n' +
+          '                       ' + lost.it_name + '\n' +
+          '                      </span></h1>\n' +
+          '                      <h5>ID : ' + lost.it_id + '</h5>\n' +
+          '                      <hr>\n' +
+          '                      <ul>\n' +
+          '                        <li>수령 가능 장소 : ' +  lost.it_take_place + '</li>\n' +
+          '                        <li>수령 가능 연락처 : ' + lost.it_contact + '</li>\n' +
+          '                        <li>습득물 분류 : ' + lost.it_cate + '</li>\n' +
+          '                        <li>습득 위치 회사명 : ' + lost.it_get_position + '</li>\n' +
+          '                        <li>습득 위치 (지하철) : ' + lost.it_get_place + '</li>\n' +
+          '                        <li>습득 일자 : ' +  lost.it_get_date + '</li>\n' +
+          '                        <li>습득 물품 상세 : ' + lost.it_get_thing + '</li>\n' +
+          '                        <li>분실물 상태 : ' + lost.it_status + '</li>\n' +
+          '                      </ul>\n' +
+          '                      <hr>\n' +
+          '                      <li class="list-group-item">\n' +
+          '                        <div class="row">\n' +
+          '                          <div class="col-md-6 p-1 text-center">이미지 확인 : </div>\n' +
+          '                          <div class="col-md-6 text-right">\n' +
+          '                            <button class="btn btn-secondary w-100" onclick="#TODO">이미지 보기</button>\n' +
+          '                          </div>\n' +
+          '                        </div>\n' +
+          '                      </li>\n' +
+          '                    </div>');
     }
     $(function () {
       losts.forEach(function (x) {
-        $("#listView").append("<p><button onclick='detailView(" + x.it_id + ")' style='width: 200px;'>" + x.it_name + "</button></p>");
+        $("#listView").append('<li class="list-group-item"><div class="row"><div class="col-md-6 p-1 text-center">' + x.it_name + '<br>(' + x.it_get_place + ')</div><div class="col-md-6 text-right"><button class="btn btn-secondary w-100" onclick="detailView(' + x.it_id + ')">상세정보</button></div></div></li>');
       });
     });
   </script>
@@ -97,32 +120,8 @@
                   </button>
                 </div>
                 <div class="modal-body text-left">
-                  <ul class="list-group">
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-6 p-1 text-center">카카오 프렌즈 가방 (00000)</div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-secondary w-100" onclick="{{ 클릭하면 이벤트 }}">상세정보</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-6 p-1 text-center">카카오 프렌즈 스티커 (00001)</div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-secondary w-100" onclick="{{ 클릭하면 이벤트 }}">상세정보</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-6 p-1 text-center">네이버 프렌즈 스티커 (00002)</div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-secondary w-100" onclick="{{ 클릭하면 이벤트 }}">상세정보</button>
-                        </div>
-                      </div>
-                    </li>
-                    <!-- <li> 태그 단위로 끊어서 넣어주면 돼요 -->
+                  <ul class="list-group" id="listView">
+
                   </ul>
                 </div>
                 <div class="modal-footer">
@@ -141,34 +140,8 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'"> <span aria-hidden="true">×</span> </button>
                 </div>
                 <div class="modal-body w-100 text-left">
-                  <ul class="data p-3" id="listView">
-                    <div class="card-block p-3 m-1">
-                      <h1><span style="font-size: 35px;">
-                        {{ lost.it_get_name }}
-                      </span></h1>
-                      <h5>ID : {{ lost.it_id|slugify }}</h5>
-                      <hr>
-                      <ul>
-                        <li>수령 가능 장소 : {{ lost.it_take_place }}</li>
-                        <li>수령 가능 연락처 : {{ lost.it_contact }}</li>
-                        <li>습득물 분류 : {{ lost.it_cate }}</li>
-                        <li>습득 위치 회사명 : {{ lost.it_get_position }}</li>
-                        <li>습득 위치 (지하철) : {{ lost.it_get_place }}</li>
-                        <li>습득 물품 상세 : {{ lost.it_get_thing }}</li>
-                        <li>분실물 상태 : {{ lost.it_status }}</li>
-                        <li>습득 물품 코드 : {{ lost.it_code }}</li>
-                      </ul>
-                      <hr>
-                      <li class="list-group-item">
-                        <div class="row">
-                          <div class="col-md-6 p-1 text-center">이미지 확인 : </div>
-                          <div class="col-md-6 text-right">
-                            <button class="btn btn-secondary w-100" onclick="{{ 클릭하면 이벤트 }}">이미지 보기</button>
-                          </div>
-                        </div>
-                      </li>
+                  <ul class="data p-3" id="detailView">
 
-                    </div>
                   </ul>
                 </div>
               </div>
