@@ -63,7 +63,7 @@
     }
     $(function () {
       losts.forEach(function (x) {
-        $("#listView").append('<li class="list-group-item"><div class="row"><div class="col-md-6 p-1 text-center">' + x.it_name + '<br>(' + x.it_get_place + ')</div><div class="col-md-6 text-right"><button class="btn btn-secondary w-100" onclick="detailView(' + x.it_id + ')">상세정보</button></div></div></li>');
+        $("#listView").append('<div class="row"><div class="col-md-8 text-center"> ' + x.it_name + '<br><font size="2">(' + x.it_get_place + ')</font></div><div class="col-md-4 text-center"><button class="btn btn-secondary m-1" onclick="detailView(' + x.it_id + ')"> 상세 정보 </button></div></div><hr>');
       });
     });
   </script>
@@ -119,13 +119,11 @@
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
-                <div class="modal-body text-left">
-                  <ul class="list-group" id="listView">
-
-                  </ul>
+                <div class="modal-body" id="listView">
+                  
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='/'">다시 검색하기</button>
+                  <button type="button" class="btn m-1 w-100 btn-block btn-secondary" data-dismiss="modal" onclick="location.href='/'" data-toggle="">다시 검색하기</button>
                 </div>
               </div>
             </div>
