@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,7 +45,6 @@
     });
   </script>
 </head>
-
 <body class="text-center">
   <nav class="navbar navbar-inverse navbar-expand-md navbar-dark bg-primary">
     <div class="container">
@@ -92,9 +90,11 @@
           <div class="col-md-12">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
-                <div class="modal-header alert alert-success">
+                <div class="modal-header alert-success">
                   <h5 class="modal-title">습득 물품 리스트</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'"> <span aria-hidden="true">×</span> </button>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'">
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
                 <div class="modal-body text-left">
                   <ul class="list-group">
@@ -136,26 +136,38 @@
           <div class="col-md-12">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
-                <div class="modal-header alert alert-success">
+                <div class="modal-header alert-success">
                   <h5 class="modal-title">습득 물품 상세정보</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="location.href='index.html'"> <span aria-hidden="true">×</span> </button>
                 </div>
                 <div class="modal-body w-100 text-left">
                   <ul class="data p-3" id="listView">
                     <div class="card-block p-3 m-1">
-                      <h1><span style="font-size: 30px;">{{ lost.it_get_name }}</span></h1>
-                      <h5>{{ lost.it_id|slugify }}</h5>
+                      <h1><span style="font-size: 35px;">
+                        {{ lost.it_get_name }}
+                      </span></h1>
+                      <h5>ID : {{ lost.it_id|slugify }}</h5>
                       <hr>
-                      <p class=""> </p>
-                      <li>수령가능장소 : {{ lost.it_take_place }}</li>
-                      <li>수령가능장소연락처 : {{ lost.it_contact }}</li>
-                      <li>습득물분류 : {{ lost.it_cate }}</li>
-                      <li>습득위치_회사명 : {{ lost.it_get_position }}</li>
-                      <li>습득위치(지하철) : {{ lost.it_get_place }}</li>
-                      <li>습득물품_상세 : {{ lost.it_get_thing }}</li>
-                      <li>분실물상태 : {{ lost.it_status }}</li>
-                      <li>습득물품코드 : {{ lost.it_code }}</li>
-                      <li>이미지 URL : {% if lost.it_image_url %}</li>
+                      <ul>
+                        <li>수령 가능 장소 : {{ lost.it_take_place }}</li>
+                        <li>수령 가능 연락처 : {{ lost.it_contact }}</li>
+                        <li>습득물 분류 : {{ lost.it_cate }}</li>
+                        <li>습득 위치 회사명 : {{ lost.it_get_position }}</li>
+                        <li>습득 위치 (지하철) : {{ lost.it_get_place }}</li>
+                        <li>습득 물품 상세 : {{ lost.it_get_thing }}</li>
+                        <li>분실물 상태 : {{ lost.it_status }}</li>
+                        <li>습득 물품 코드 : {{ lost.it_code }}</li>
+                      </ul>
+                      <hr>
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-md-6 p-1 text-center">이미지 확인 : </div>
+                          <div class="col-md-6 text-right">
+                            <button class="btn btn-secondary w-100" onclick="{{ 클릭하면 이벤트 }}">이미지 보기</button>
+                          </div>
+                        </div>
+                      </li>
+
                     </div>
                   </ul>
                 </div>
