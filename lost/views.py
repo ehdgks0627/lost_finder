@@ -116,7 +116,7 @@ def lost_list(request):
                 except:
                     pass
         if cnt:
-            return result / cnt
+            return result / cnt ** 2
         else:
             return 0.0
 
